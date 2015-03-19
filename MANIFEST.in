@@ -1,0 +1,5 @@
+include *.txt
+include *.rst
+include *.json
+recursive-include clickclick *.py *.json
+recursive-include docs *.rst *.py

@@ -1,0 +1,7 @@
+*.pyc
+*.egg*
+build/
+dist/
+junit.xml
+coverage.xml
+.coverage

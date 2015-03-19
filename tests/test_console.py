@@ -12,6 +12,8 @@ def test_echo():
     action('Action..')
     warning('some warning')
 
+    info('Some info')
+
 
 def test_action():
     try:
@@ -19,3 +21,6 @@ def test_action():
             raise Exception()
     except:
         pass
+
+    with Action('Perform and progress..') as act:
+        act.progress()

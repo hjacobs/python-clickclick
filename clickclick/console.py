@@ -32,6 +32,10 @@ def warning(msg, **kwargs):
     click.secho(' {}'.format(msg), fg='yellow', bold=True, **kwargs)
 
 
+def info(msg):
+    click.secho('{}'.format(msg), fg='blue', bold=True)
+
+
 class Action:
 
     def __init__(self, msg, **kwargs):

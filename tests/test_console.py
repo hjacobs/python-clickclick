@@ -1,4 +1,5 @@
 import pytest
+import time
 
 from clickclick import *
 
@@ -24,3 +25,7 @@ def test_action():
 
     with Action('Perform and progress..') as act:
         act.progress()
+        act.error('failing..')
+
+def test_print_tables():
+    print_table('Name Status some_time'.split(), [{'Name': 'foobar', 'Status': True}, {'some_time': time.time() - 123}])

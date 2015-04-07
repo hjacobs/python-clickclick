@@ -3,19 +3,6 @@ import datetime
 import time
 
 
-STYLES = {
-    'RUNNING': {'fg': 'green'},
-    'TERMINATED': {'fg': 'red'},
-}
-
-
-TITLES = {
-}
-
-MAX_COLUMN_WIDTH = {
-}
-
-
 def action(msg, **kwargs):
     click.secho(msg.format(**kwargs), nl=False, bold=True)
 
@@ -93,19 +80,28 @@ def format(col, val):
     return val
 
 
-def print_table(cols, rows):
+def print_table(cols, rows, styles=None, titles=None, max_column_widths=None):
+    if not styles:
+        styles = {}
+
+    if not titles:
+        titles = {}
+
+    if not max_column_widths:
+        max_column_widths = {}
+
     colwidths = {}
 
     for col in cols:
-        colwidths[col] = len(TITLES.get(col, col))
+        colwidths[col] = len(titles.get(col, col))
 
     for row in rows:
         for col in cols:
             val = row.get(col)
-            colwidths[col] = min(max(colwidths[col], len(format(col, val))), MAX_COLUMN_WIDTH.get(col, 1000))
+            colwidths[col] = min(max(colwidths[col], len(format(col, val))), max_column_widths.get(col, 1000))
 
     for i, col in enumerate(cols):
-        click.secho(('{:' + str(colwidths[col]) + '}').format(TITLES.get(col, col.title().replace('_', ' '))),
+        click.secho(('{:' + str(colwidths[col]) + '}').format(titles.get(col, col.title().replace('_', ' '))),
                     nl=False, fg='black', bg='white')
         if i < len(cols)-1:
             click.secho('│', nl=False, fg='black', bg='white')
@@ -116,7 +112,7 @@ def print_table(cols, rows):
             val = row.get(col)
             align = ''
             try:
-                style = STYLES.get(val, {})
+                style = styles.get(val, {})
             except:
                 # val might not be hashable
                 style = {}
@@ -131,8 +127,8 @@ def print_table(cols, rows):
                 align = '>'
             val = format(col, val)
 
-            if len(val) > MAX_COLUMN_WIDTH.get(col, 1000):
-                val = val[:MAX_COLUMN_WIDTH.get(col, 1000) - 2] + '..'
+            if len(val) > max_column_widths.get(col, 1000):
+                val = val[:max_column_widths.get(col, 1000) - 2] + '..'
             click.secho(('{:' + align + str(colwidths[col]) + '}').format(val), nl=False, **style)
             click.echo(' ', nl=False)
         click.echo('')

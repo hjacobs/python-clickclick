@@ -18,7 +18,7 @@ Usage
 
 .. code-block:: python
 
-    from click.click import Action
+    from clickclick import Action
 
     with Action('Performing remote call..') as act:
         do_something()

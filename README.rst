@@ -9,6 +9,18 @@ Click Click
 .. image:: https://coveralls.io/repos/zalando/python-clickclick/badge.svg
    :target: https://coveralls.io/r/zalando/python-clickclick
 
+.. image:: https://img.shields.io/pypi/dw/clickclick.svg
+   :target: https://pypi.python.org/pypi/clickclick/
+   :alt: PyPI Downloads
+
+.. image:: https://img.shields.io/pypi/v/clickclick.svg
+   :target: https://pypi.python.org/pypi/clickclick/
+   :alt: Latest PyPI version
+
+.. image:: https://img.shields.io/pypi/l/clickclick.svg
+   :target: https://pypi.python.org/pypi/clickclick/
+   :alt: License
+
 Utility functions for the wonderful `Click library`_.
 Click is a Python package for creating beautiful command line interfaces in a composable way with as little code as necessary.
 

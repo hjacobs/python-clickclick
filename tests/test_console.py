@@ -27,5 +27,13 @@ def test_action():
         act.progress()
         act.error('failing..')
 
+
 def test_print_tables():
     print_table('Name Status some_time'.split(), [{'Name': 'foobar', 'Status': True}, {'some_time': time.time() - 123}])
+
+
+def test_json_out(capsys):
+    with OutputFormat('json'):
+        print_table('a b'.split(), [{}, {}])
+        out, err = capsys.readouterr()
+        assert '[{"a": null, "b": null}, {"a": null, "b": null}]\n' == out

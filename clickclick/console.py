@@ -1,26 +1,55 @@
 import click
 import datetime
+import json
 import time
 
 
+# global state is evil!
+# anyway, we are using this as a convenient hack to switch output formats
+GLOBAL_STATE = {'output_format': 'text'}
+
+
+def is_json_output():
+    return GLOBAL_STATE.get('output_format') == 'json'
+
+
+def secho(*args, **kwargs):
+    if not is_json_output():
+        click.secho(*args, **kwargs)
+
+
 def action(msg, **kwargs):
-    click.secho(msg.format(**kwargs), nl=False, bold=True)
+    secho(msg.format(**kwargs), nl=False, bold=True)
 
 
 def ok(msg=' OK', **kwargs):
-    click.secho(msg, fg='green', bold=True, **kwargs)
+    secho(msg, fg='green', bold=True, **kwargs)
 
 
 def error(msg, **kwargs):
-    click.secho(' {}'.format(msg), fg='red', bold=True, **kwargs)
+    secho(' {}'.format(msg), fg='red', bold=True, **kwargs)
 
 
 def warning(msg, **kwargs):
-    click.secho(' {}'.format(msg), fg='yellow', bold=True, **kwargs)
+    secho(' {}'.format(msg), fg='yellow', bold=True, **kwargs)
 
 
 def info(msg):
-    click.secho('{}'.format(msg), fg='blue', bold=True)
+    secho('{}'.format(msg), fg='blue', bold=True)
+
+
+class OutputFormat:
+
+    def __init__(self, fmt):
+        self.fmt = fmt
+        self._old_fmt = None
+
+    def __enter__(self):
+        self._old_fmt = GLOBAL_STATE.get('output_format')
+        GLOBAL_STATE['output_format'] = self.fmt
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        GLOBAL_STATE['output_format'] = self._old_fmt
 
 
 class Action:
@@ -81,6 +110,16 @@ def format(col, val):
 
 
 def print_table(cols, rows, styles=None, titles=None, max_column_widths=None):
+    if is_json_output():
+        new_rows = []
+        for row in rows:
+            new_row = {}
+            for col in cols:
+                new_row[col] = row.get(col)
+            new_rows.append(new_row)
+        print(json.dumps(new_rows, sort_keys=True))
+        return
+
     if not styles:
         styles = {}
 

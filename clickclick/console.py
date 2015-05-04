@@ -1,6 +1,7 @@
 import click
 import datetime
 import json
+import sys
 import time
 
 
@@ -11,6 +12,10 @@ GLOBAL_STATE = {'output_format': 'text'}
 
 def is_json_output():
     return GLOBAL_STATE.get('output_format') == 'json'
+
+
+def is_tsv_output():
+    return GLOBAL_STATE.get('output_format') == 'tsv'
 
 
 def secho(*args, **kwargs):
@@ -78,19 +83,25 @@ class Action:
         click.secho(' .', nl=False)
 
 
+def get_now():
+    return datetime.datetime.now()
+
+
 def format_time(ts):
     if ts == 0:
         return ''
-    now = datetime.datetime.now()
+    now = get_now()
     try:
         dt = datetime.datetime.fromtimestamp(ts)
     except:
         return ts
     diff = now - dt
     s = diff.total_seconds()
-    if s > 3600:
+    if s > (3600 * 49):
+        t = '{:.0f}d'.format(s / (3600*24))
+    elif s > 3600:
         t = '{:.0f}h'.format(s / 3600)
-    elif s > 60:
+    elif s > 70:
         t = '{:.0f}m'.format(s / 60)
     else:
         t = '{:.0f}s'.format(s)
@@ -109,6 +120,20 @@ def format(col, val):
     return val
 
 
+def print_tsv_table(cols, rows):
+    sys.stdout.write('\t'.join(cols))
+    sys.stdout.write('\n')
+    for row in rows:
+        first_col = True
+        for col in cols:
+            if not first_col:
+                sys.stdout.write('\t')
+            val = row.get(col)
+            sys.stdout.write(format(col, val))
+            first_col = False
+        sys.stdout.write('\n')
+
+
 def print_table(cols, rows, styles=None, titles=None, max_column_widths=None):
     if is_json_output():
         new_rows = []
@@ -119,6 +144,8 @@ def print_table(cols, rows, styles=None, titles=None, max_column_widths=None):
             new_rows.append(new_row)
         print(json.dumps(new_rows, sort_keys=True))
         return
+    elif is_tsv_output():
+        return print_tsv_table(cols, rows)
 
     if not styles:
         styles = {}

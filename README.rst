@@ -30,12 +30,16 @@ Usage
 
 .. code-block:: python
 
-    from clickclick import Action
+    from clickclick import Action, OutputFormat
 
     with Action('Performing remote call..') as act:
         do_something()
         act.progress()
         do_something_else()
+
+    output_format = 'json' # default: "text"
+    with OutputFormat(output_format):
+        print_table(['col1', 'col2'], rows)
 
 
 .. _Click library: http://click.pocoo.org/3/

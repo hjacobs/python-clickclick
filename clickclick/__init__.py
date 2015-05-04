@@ -1,3 +1,3 @@
 from clickclick.console import *  # noqa
 
-__version__ = '0.8'
+__version__ = '0.9'

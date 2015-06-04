@@ -12,6 +12,10 @@ def test_echo():
     error('some error')
 
     action('Action..')
+    with pytest.raises(SystemExit):
+        fatal_error('some fatal error')
+
+    action('Action..')
     warning('some warning')
 
     info('Some info')
@@ -27,6 +31,10 @@ def test_action():
     with Action('Perform and progress..') as act:
         act.progress()
         act.error('failing..')
+
+    with pytest.raises(SystemExit):
+        with Action('Try and fail badly..') as act:
+            act.fatal_error('failing..')
 
 
 def test_print_tables():

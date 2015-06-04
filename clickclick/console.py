@@ -35,6 +35,11 @@ def error(msg, **kwargs):
     secho(' {}'.format(msg), fg='red', bold=True, **kwargs)
 
 
+def fatal_error(msg, **kwargs):
+    error(msg, **kwargs)
+    sys.exit(1)
+
+
 def warning(msg, **kwargs):
     secho(' {}'.format(msg), fg='yellow', bold=True, **kwargs)
 
@@ -63,6 +68,7 @@ class Action:
         self.msg = msg
         self.msg_args = kwargs
         self.errors = []
+        self._suppress_exception = False
 
     def __enter__(self):
         action(self.msg, **self.msg_args)
@@ -72,8 +78,12 @@ class Action:
         if exc_type is None:
             if not self.errors:
                 ok()
-        else:
+        elif not self._suppress_exception:
             error('EXCEPTION OCCURRED: {}'.format(exc_val))
+
+    def fatal_error(self, msg, **kwargs):
+        self._suppress_exception = True  # Avoid printing "EXCEPTION OCCURRED: -1" on exit
+        fatal_error(msg, **kwargs)
 
     def error(self, msg, **kwargs):
         error(msg, **kwargs)

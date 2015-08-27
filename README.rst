@@ -47,14 +47,12 @@ Usage
 Working Example
 ---------------
 
-.. literalinclude:: example.py
-   :language: python3
-   :linenos:
+.. include:: example.py
+   :literal:
 
 
-.. literalinclude:: example.sh
-   :language: bash
-   :linenos:
+.. include:: example.sh
+   :literal:
 
 
 License

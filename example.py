@@ -171,7 +171,7 @@ def work_in_progress():
 @click.argument('percentage', type=FloatRange(0, 100, clamp=True), required=True)
 def work_done(percentage):
     '''Work done in ?? %'''
-    state = choice('Please select the state of your work', ['Done', 'In Progress', 'unknown', 'lost'])
+    state = choice('Please select the state of your work', ['Done', 'In Progress', 'unknown', 'lost'], default='lost')
 
     print('Your work is {}% {}'.format(percentage, state))
 

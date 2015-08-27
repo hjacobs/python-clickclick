@@ -156,7 +156,7 @@ See this `example script`_ and the `shell script`_.
    2) In Progress
    3) unknown
    4) lost
-   Please select (1-4): 1
+   Please select (1-4) [4]: 2
    Your work is 15.4% In Progress
 
 ::
@@ -167,8 +167,19 @@ See this `example script`_ and the `shell script`_.
    2) In Progress
    3) unknown
    4) lost
-   Please select (1-4): 3
+   Please select (1-4) [4]: 3
    Your work is 15.4% unknown
+
+::
+
+   $ ./example.py work_ 15.4
+   Please select the state of your work
+   1) Done
+   2) In Progress
+   3) unknown
+   4) lost
+   Please select (1-4) [4]:
+   Your work is 15.4% lost
 
 ::
 

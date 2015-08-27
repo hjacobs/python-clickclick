@@ -117,7 +117,7 @@ def test_float_range():
 
 
 def test_choice(monkeypatch):
-    monkeypatch.setattr('click.prompt', lambda prompt, type: '1')
+    monkeypatch.setattr('click.prompt', lambda prompt, type, default: '1')
     assert 'a' == choice('Please choose', ['a', 'b'])
     assert 'a' == choice('Please choose', [('a', 'Label A')])
 

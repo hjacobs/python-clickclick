@@ -22,6 +22,7 @@ set -x
 # print Choice prompt
 echo 2 | ./example.py work_ 15.4
 echo 3 | ./example.py work_ 15.4
+echo | ./example.py work_ 15.4
 
 # Print Action messages with multiple output format
 ./example.py output

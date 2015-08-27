@@ -230,19 +230,22 @@ def print_table(cols, rows, styles=None, titles=None, max_column_widths=None):
         click.echo('')
 
 
-def choice(prompt: str, options: list):
+def choice(prompt: str, options: list, default=None):
     """
     Ask to user to select one option and return it
     """
     click.secho(prompt)
+    promptdefault = None
     for i, option in enumerate(options):
         if isinstance(option, tuple):
             value, label = option
         else:
             value = label = option
+        if value == default:
+            promptdefault = i + 1
         click.secho('{}) {}'.format(i+1, label))
     while True:
-        selection = click.prompt('Please select (1-{})'.format(len(options)), type=int)
+        selection = click.prompt('Please select (1-{})'.format(len(options)), type=int, default=promptdefault)
         try:
             result = options[int(selection)-1]
             if isinstance(result, tuple):

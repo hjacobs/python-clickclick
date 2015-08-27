@@ -3,7 +3,8 @@ import datetime
 import json
 import sys
 import time
-
+import yaml
+import numbers
 
 # global state is evil!
 # anyway, we are using this as a convenient hack to switch output formats
@@ -14,12 +15,20 @@ def is_json_output():
     return GLOBAL_STATE.get('output_format') == 'json'
 
 
+def is_yaml_output():
+    return GLOBAL_STATE.get('output_format') == 'yaml'
+
+
 def is_tsv_output():
     return GLOBAL_STATE.get('output_format') == 'tsv'
 
 
+def is_text_output():
+    return GLOBAL_STATE.get('output_format') == 'text'
+
+
 def secho(*args, **kwargs):
-    if not is_json_output():
+    if is_text_output():
         click.secho(*args, **kwargs)
 
 
@@ -69,6 +78,7 @@ class Action:
         self.msg_args = kwargs
         self.errors = []
         self._suppress_exception = False
+        self.ok_msg = ' OK'
 
     def __enter__(self):
         action(self.msg, **self.msg_args)
@@ -77,7 +87,7 @@ class Action:
     def __exit__(self, exc_type, exc_val, exc_tb):
         if exc_type is None:
             if not self.errors:
-                ok()
+                ok(self.ok_msg)
         elif not self._suppress_exception:
             error('EXCEPTION OCCURRED: {}'.format(exc_val))
 
@@ -90,7 +100,14 @@ class Action:
         self.errors.append(msg)
 
     def progress(self):
-        click.secho(' .', nl=False)
+        secho(' .', nl=False)
+
+    def warning(self, msg, **kwargs):
+        warning(msg, **kwargs)
+        self.errors.append(msg)
+
+    def ok(self, msg):
+        self.ok_msg = ' {}'.format(msg)
 
 
 def get_now():
@@ -145,25 +162,28 @@ def print_tsv_table(cols, rows):
 
 
 def print_table(cols, rows, styles=None, titles=None, max_column_widths=None):
-    if is_json_output():
+    if is_json_output() or is_yaml_output():
         new_rows = []
         for row in rows:
             new_row = {}
             for col in cols:
                 new_row[col] = row.get(col)
             new_rows.append(new_row)
-        print(json.dumps(new_rows, sort_keys=True))
+        if is_json_output():
+            print(json.dumps(new_rows, sort_keys=True))
+        else:
+            print(yaml.safe_dump_all(new_rows, default_flow_style=False))
         return
     elif is_tsv_output():
         return print_tsv_table(cols, rows)
 
-    if not styles:
+    if not styles or type(styles) != dict:
         styles = {}
 
-    if not titles:
+    if not titles or type(titles) != dict:
         titles = {}
 
-    if not max_column_widths:
+    if not max_column_widths or type(max_column_widths) != dict:
         max_column_widths = {}
 
     colwidths = {}
@@ -192,7 +212,7 @@ def print_table(cols, rows, styles=None, titles=None, max_column_widths=None):
             except:
                 # val might not be hashable
                 style = {}
-            if val is not None and col.endswith('_time'):
+            if val is not None and col.endswith('_time') and isinstance(val, numbers.Number):
                 align = '>'
                 diff = time.time() - val
                 if diff < 900:
@@ -210,19 +230,22 @@ def print_table(cols, rows, styles=None, titles=None, max_column_widths=None):
         click.echo('')
 
 
-def choice(prompt: str, options: list):
+def choice(prompt: str, options: list, default=None):
     """
     Ask to user to select one option and return it
     """
     click.secho(prompt)
+    promptdefault = None
     for i, option in enumerate(options):
         if isinstance(option, tuple):
             value, label = option
         else:
             value = label = option
+        if value == default:
+            promptdefault = i + 1
         click.secho('{}) {}'.format(i+1, label))
     while True:
-        selection = click.prompt('Please select (1-{})'.format(len(options)), type=int)
+        selection = click.prompt('Please select (1-{})'.format(len(options)), type=int, default=promptdefault)
         try:
             result = options[int(selection)-1]
             if isinstance(result, tuple):

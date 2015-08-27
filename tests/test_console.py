@@ -60,6 +60,8 @@ def test_print_tables():
                                                   {'Status': 'long output', 'some_time': 0}],
                 styles='wrong format',
                 max_column_widths={'Status': 4})
+    print_table('Name Status some_time'.split(), [{'Name': {'orignal': 'bla', 'other': 'foo'}, 'Status': 'ERROR'}],
+                styles={'ERROR': {'fg': 'red', 'bold': True}})
 
 
 def test_json_out(capsys):
@@ -117,7 +119,16 @@ def test_float_range():
 
 
 def test_choice(monkeypatch):
-    monkeypatch.setattr('click.prompt', lambda prompt, type, default: '1')
+    def get_number():
+        yield 50
+        while True:
+            yield 1
+    generator = get_number()
+
+    def returnnumber(*args, **vargs):
+        return next(generator)
+
+    monkeypatch.setattr('click.prompt', returnnumber)
     assert 'a' == choice('Please choose', ['a', 'b'])
     assert 'a' == choice('Please choose', [('a', 'Label A')])
 
@@ -149,8 +160,16 @@ def test_cli(monkeypatch):
     assert 'last\n' == result.output
 
     runner = CliRunner()
-    result = runner.invoke(cli, ['test'])
-    assert 'Error: No such command "test"' in result.output
+    result = runner.invoke(cli, ['notexists'])
+    assert 'Error: No such command "notexists"' in result.output
+
+
+def test_choice_default(monkeypatch):
+    runner = CliRunner()
+    result = runner.invoke(cli, ['testchoice'], input='\n\n\n1\n')
+    assert '3) c\nPlease select (1-3) [3]: \n>>c<<\n' in result.output
+    assert '3) Label C\nPlease select (1-3) [2]: \n>>b<<\n' in result.output
+    assert '3) Label C\nPlease select (1-3): \nPlease select (1-3): 1\n>>a<<\n' in result.output
 
 
 @click.group(cls=AliasedGroup)
@@ -166,3 +185,10 @@ def list():
 @cli.command('last')
 def last():
     print('last')
+
+
+@cli.command('testchoice')
+def choicetest():
+    print('>>{}<<'.format(choice('Please choose', ['a', 'b', 'c'], default='c')))
+    print('>>{}<<'.format(choice('Please choose', [('a', 'Label A'), ('b', 'Label B'), ('c', 'Label C')], default='b')))
+    print('>>{}<<'.format(choice('Please choose', [('a', 'Label A'), ('b', 'Label B'), ('c', 'Label C')], default='x')))

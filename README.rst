@@ -42,7 +42,20 @@ Usage
         print_table(['col1', 'col2'], rows)
 
 
-.. _Click library: http://click.pocoo.org/3/
+.. _Click library: http://click.pocoo.org/
+
+Working Example
+---------------
+
+.. literalinclude:: example.py
+   :language: python3
+   :linenos:
+
+
+.. literalinclude:: example.sh
+   :language: bash
+   :linenos:
+
 
 License
 =======

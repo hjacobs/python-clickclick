@@ -3,7 +3,8 @@ import pytest
 import time
 
 from click.testing import CliRunner
-from clickclick import *
+from clickclick import *  # noqa
+
 
 def test_echo():
     action('Action..')
@@ -76,7 +77,6 @@ def test_yaml_out(capsys):
         print_table('a b'.split(), [{}, {}])
         out, err = capsys.readouterr()
         assert 'a: null\nb: null\n---\na: null\nb: null\n\n' == out
-
 
 
 def test_tsv_out(capsys):

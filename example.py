@@ -155,7 +155,7 @@ def work_in_progress():
 
     try:
         with Action('Start an exception..') as act:
-            function_not_found()
+            function_not_found()  # noqa
             act.progress()
     except:
         pass

@@ -47,12 +47,20 @@ Usage
 Working Example
 ---------------
 
-.. include:: example.py
-   :literal:
+See this `example script`_ and the `shell script`_.
+
+.. _example script: example.py
+
+.. literalinclude:: example.py
+   :language: python3
+   :linenos:
 
 
-.. include:: example.sh
-   :literal:
+.. _shell script: example.sh
+
+.. literalinclude:: example.sh
+   :language: bash
+   :linenos:
 
 
 License

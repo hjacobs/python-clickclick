@@ -4,7 +4,7 @@ import json
 import sys
 import time
 import yaml
-
+import numbers
 
 # global state is evil!
 # anyway, we are using this as a convenient hack to switch output formats
@@ -180,7 +180,7 @@ def print_table(cols, rows, styles=None, titles=None, max_column_widths=None):
     if not styles or type(styles) != dict:
         styles = {}
 
-    if not titles or type(styles) != dict:
+    if not titles or type(titles) != dict:
         titles = {}
 
     if not max_column_widths or type(max_column_widths) != dict:
@@ -207,8 +207,12 @@ def print_table(cols, rows, styles=None, titles=None, max_column_widths=None):
         for col in cols:
             val = row.get(col)
             align = ''
-            style = styles.get(val, {})
-            if val is not None and col.endswith('_time') and type(val) in (float, int):
+            try:
+                style = styles.get(val, {})
+            except:
+                # val might not be hashable
+                style = {}
+            if val is not None and col.endswith('_time') and isinstance(val, numbers.Number):
                 align = '>'
                 diff = time.time() - val
                 if diff < 900:

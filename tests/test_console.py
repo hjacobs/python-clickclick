@@ -11,14 +11,14 @@ def test_echo():
     ok()
 
     action('Action..')
-    error('some error')
+    error(' some error')
 
     action('Action..')
     with pytest.raises(SystemExit):
-        fatal_error('some fatal error')  # noqa
+        fatal_error(' some fatal error')  # noqa
 
     action('Action..')
-    warning('some warning')
+    warning(' some warning')
 
     info('Some info')
 

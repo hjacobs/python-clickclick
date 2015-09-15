@@ -94,7 +94,7 @@ class Action:
             if not self.errors:
                 ok(self.ok_msg)
         elif not self._suppress_exception:
-            error('EXCEPTION OCCURRED: {}'.format(exc_val))
+            error(' EXCEPTION OCCURRED: {}'.format(exc_val))
 
     def fatal_error(self, msg, **kwargs):
         self._suppress_exception = True  # Avoid printing "EXCEPTION OCCURRED: -1" on exit

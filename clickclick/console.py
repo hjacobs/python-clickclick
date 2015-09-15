@@ -28,8 +28,13 @@ def is_text_output():
 
 
 def secho(*args, **kwargs):
-    if is_text_output():
-        click.secho(*args, **kwargs)
+    if 'err' not in kwargs:
+        if not sys.stdout.isatty():
+            kwargs['err'] = True
+        if not is_text_output():
+            kwargs['err'] = True
+
+    click.secho(*args, **kwargs)
 
 
 def action(msg, **kwargs):
@@ -41,7 +46,7 @@ def ok(msg=' OK', **kwargs):
 
 
 def error(msg, **kwargs):
-    secho(' {}'.format(msg), fg='red', bold=True, **kwargs)
+    secho(msg, fg='red', bold=True, **kwargs)
 
 
 def fatal_error(msg, **kwargs):
@@ -50,11 +55,11 @@ def fatal_error(msg, **kwargs):
 
 
 def warning(msg, **kwargs):
-    secho(' {}'.format(msg), fg='yellow', bold=True, **kwargs)
+    secho(msg, fg='yellow', bold=True, **kwargs)
 
 
 def info(msg):
-    secho('{}'.format(msg), fg='blue', bold=True)
+    secho(msg, fg='blue', bold=True)
 
 
 class OutputFormat:
@@ -93,17 +98,17 @@ class Action:
 
     def fatal_error(self, msg, **kwargs):
         self._suppress_exception = True  # Avoid printing "EXCEPTION OCCURRED: -1" on exit
-        fatal_error(msg, **kwargs)
+        fatal_error(' {}'.format(msg), **kwargs)
 
     def error(self, msg, **kwargs):
-        error(msg, **kwargs)
+        error(' {}'.format(msg), **kwargs)
         self.errors.append(msg)
 
     def progress(self):
         secho(' .', nl=False)
 
     def warning(self, msg, **kwargs):
-        warning(msg, **kwargs)
+        warning(' {}'.format(msg), **kwargs)
         self.errors.append(msg)
 
     def ok(self, msg):
@@ -234,7 +239,11 @@ def choice(prompt: str, options: list, default=None):
     """
     Ask to user to select one option and return it
     """
-    click.secho(prompt)
+    stderr = True
+    if sys.stdout.isatty():
+        stderr = False
+
+    click.secho(prompt, err=stderr)
     promptdefault = None
     for i, option in enumerate(options):
         if isinstance(option, tuple):
@@ -243,9 +252,10 @@ def choice(prompt: str, options: list, default=None):
             value = label = option
         if value == default:
             promptdefault = i + 1
-        click.secho('{}) {}'.format(i+1, label))
+        click.secho('{}) {}'.format(i+1, label), err=stderr)
     while True:
-        selection = click.prompt('Please select (1-{})'.format(len(options)), type=int, default=promptdefault)
+        selection = click.prompt('Please select (1-{})'.format(len(options)),
+                                 type=int, default=promptdefault, err=stderr)
         try:
             result = options[int(selection)-1]
             if isinstance(result, tuple):

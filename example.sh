@@ -24,6 +24,10 @@ echo 2 | ./example.py work_ 15.4
 echo 3 | ./example.py work_ 15.4
 echo | ./example.py work_ 15.4
 
+# redirect output
+echo 2 | ./example.py work_ 15.4 >/dev/null
+echo 3 | ./example.py work_ 15.4 >/dev/null
+
 # Print Action messages with multiple output format
 ./example.py output
 ./example.py output -o tsv

@@ -15,7 +15,7 @@ def test_echo():
 
     action('Action..')
     with pytest.raises(SystemExit):
-        fatal_error('some fatal error')
+        fatal_error('some fatal error')  # noqa
 
     action('Action..')
     warning('some warning')
@@ -65,25 +65,40 @@ def test_print_tables():
                 styles={'ERROR': {'fg': 'red', 'bold': True}})
 
 
+def test_text_out(capsys):
+    with OutputFormat('text'):
+        warning('this is a warning')
+        print_table('a b'.split(), [{}, {}])
+    out, err = capsys.readouterr()
+    assert 'A│B\n    \n    \n' == out
+    assert 'this is a warning\n' == err
+
+
 def test_json_out(capsys):
     with OutputFormat('json'):
+        warning('this is a warning')
         print_table('a b'.split(), [{}, {}])
-        out, err = capsys.readouterr()
-        assert '[{"a": null, "b": null}, {"a": null, "b": null}]\n' == out
+    out, err = capsys.readouterr()
+    assert '[{"a": null, "b": null}, {"a": null, "b": null}]\n' == out
+    assert 'this is a warning\n' == err
 
 
 def test_yaml_out(capsys):
     with OutputFormat('yaml'):
+        warning('this is a warning')
         print_table('a b'.split(), [{}, {}])
-        out, err = capsys.readouterr()
-        assert 'a: null\nb: null\n---\na: null\nb: null\n\n' == out
+    out, err = capsys.readouterr()
+    assert 'a: null\nb: null\n---\na: null\nb: null\n\n' == out
+    assert 'this is a warning\n' == err
 
 
 def test_tsv_out(capsys):
     with OutputFormat('tsv'):
+        warning('this is a warning')
         print_table('a b'.split(), [{"a": 1}, {"b": 2}])
-        out, err = capsys.readouterr()
-        assert 'a\tb\n1\t\n\t2\n' == out
+    out, err = capsys.readouterr()
+    assert 'a\tb\n1\t\n\t2\n' == out
+    assert 'this is a warning\n' == err
 
 
 def test_float_range():

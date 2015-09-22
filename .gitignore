@@ -6,3 +6,4 @@ junit.xml
 coverage.xml
 .coverage
 htmlcov
+.cache

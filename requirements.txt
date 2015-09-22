@@ -1,1 +1,2 @@
 click>=4.0
+PyYAML>=3.11

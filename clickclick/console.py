@@ -28,6 +28,9 @@ def is_text_output():
 
 
 def secho(*args, **kwargs):
+    args = list(args)
+    if len(args) > 0:
+        args[0] = '{}'.format(args[0])
     if 'err' not in kwargs:
         if not sys.stdout.isatty():
             kwargs['err'] = True

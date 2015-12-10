@@ -21,8 +21,8 @@ Click Click
    :target: https://pypi.python.org/pypi/clickclick/
    :alt: License
 
-Utility functions for the wonderful `Click library`_.
-Click is a Python 3 package for creating beautiful command line interfaces in a composable way with as little code as necessary.
+Utility functions (Python 3 only) for the wonderful `Click library`_.
+Click is a Python package for creating beautiful command line interfaces in a composable way with as little code as necessary.
 
 
 Usage

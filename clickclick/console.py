@@ -5,6 +5,7 @@ import sys
 import time
 import yaml
 import numbers
+import urllib.parse
 
 # global state is evil!
 # anyway, we are using this as a convenient hack to switch output formats
@@ -322,3 +323,26 @@ class FloatRange(click.types.FloatParamType):
 
     def __repr__(self):
         return 'FloatRange(%r, %r)' % (self.min, self.max)
+
+
+class UrlType(click.types.ParamType):
+    name = 'url'
+
+    def __init__(self, default_scheme='https', allowed_schemes=('http', 'https')):
+        self.default_scheme = default_scheme
+        self.allowed_schemes = allowed_schemes
+
+    def convert(self, value, param, ctx):
+        value = value.strip()
+        if not value:
+            self.fail('"{}" is not a valid URL'.format(value))
+        if self.default_scheme and '://' not in value:
+            value = '{}://{}'.format(self.default_scheme, value)
+        url = urllib.parse.urlsplit(value)
+        if self.allowed_schemes and url.scheme not in self.allowed_schemes:
+            self.fail('"{}" is not one of the allowed URL schemes ({})'.format(
+                      url.scheme, ', '.join(self.allowed_schemes)))
+        return urllib.parse.urlunsplit(url)
+
+    def __repr__(self):
+        return 'UrlType(%r, %r)' % (self.default_scheme, self.allowed_schemes)

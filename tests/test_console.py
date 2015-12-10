@@ -133,6 +133,22 @@ def test_float_range():
     assert 3 == fr.convert('3', None, None)
 
 
+def test_url_type():
+    ut = UrlType()
+    assert str(ut) == "UrlType('https', ('http', 'https'))"
+    assert 'https://foobar' == ut.convert(' foobar ', None, None)
+
+    try:
+        ut.convert(' ', None, None)
+    except click.exceptions.BadParameter as e:
+        assert e.format_message() == 'Invalid value: "" is not a valid URL'
+
+    try:
+        ut.convert('ftp://test', None, None)
+    except click.exceptions.BadParameter as e:
+        assert e.format_message() == 'Invalid value: "ftp" is not one of the allowed URL schemes (http, https)'
+
+
 def test_choice(monkeypatch):
     def get_number():
         yield 50

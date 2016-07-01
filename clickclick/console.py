@@ -50,7 +50,10 @@ def ok(msg=' OK', **kwargs):
 
 
 def error(msg, **kwargs):
-    secho(msg, fg='red', bold=True, **kwargs)
+    """
+    Prints `msg` in red and bold to Standard error to indicate it was an error
+    """
+    secho(msg, fg='red', bold=True, err=True, **kwargs)
 
 
 def fatal_error(msg, **kwargs):

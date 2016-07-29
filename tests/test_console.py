@@ -2,8 +2,25 @@ import datetime
 import pytest
 import time
 
+import click
+
 from click.testing import CliRunner
-from clickclick import *  # noqa
+from clickclick import (
+    Action,
+    action,
+    AliasedGroup,
+    choice,
+    error,
+    fatal_error,
+    FloatRange,
+    format_time,
+    info,
+    ok,
+    OutputFormat,
+    print_table,
+    UrlType,
+    warning,
+)
 
 
 def test_echo():

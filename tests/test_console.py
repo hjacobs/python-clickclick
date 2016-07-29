@@ -45,6 +45,12 @@ def test_action():
     with Action('Perform and progress..') as act:
         act.progress()
 
+    with Action('Perform, progress and done', ok_msg='DONE') as act:
+        act.progress()
+
+    with Action('Perform action new line', nl=True):
+        print('In new line!')
+
     with pytest.raises(SystemExit):
         with Action('Try and fail badly..') as act:
             act.fatal_error('failing..')

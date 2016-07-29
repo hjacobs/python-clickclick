@@ -2,8 +2,25 @@ import datetime
 import pytest
 import time
 
+import click
+
 from click.testing import CliRunner
-from clickclick import *  # noqa
+from clickclick import (
+    Action,
+    action,
+    AliasedGroup,
+    choice,
+    error,
+    fatal_error,
+    FloatRange,
+    format_time,
+    info,
+    ok,
+    OutputFormat,
+    print_table,
+    UrlType,
+    warning,
+)
 
 
 def test_echo():
@@ -44,6 +61,12 @@ def test_action():
 
     with Action('Perform and progress..') as act:
         act.progress()
+
+    with Action('Perform, progress and done', ok_msg='DONE') as act:
+        act.progress()
+
+    with Action('Perform action new line', nl=True):
+        print('In new line!')
 
     with pytest.raises(SystemExit):
         with Action('Try and fail badly..') as act:

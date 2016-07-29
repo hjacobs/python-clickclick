@@ -82,15 +82,18 @@ class OutputFormat:
 
 class Action:
 
-    def __init__(self, msg, **kwargs):
+    def __init__(self, msg, ok_msg=' OK', nl=False, **kwargs):
         self.msg = msg
+        self.ok_msg = ok_msg
         self.msg_args = kwargs
+        self.nl = nl
         self.errors = []
         self._suppress_exception = False
-        self.ok_msg = ' OK'
 
     def __enter__(self):
         action(self.msg, **self.msg_args)
+        if self.nl:
+            secho('')
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -134,7 +137,7 @@ def format_time(ts):
     diff = now - dt
     s = diff.total_seconds()
     if s > (3600 * 49):
-        t = '{:.0f}d'.format(s / (3600*24))
+        t = '{:.0f}d'.format(s / (3600 * 24))
     elif s > 3600:
         t = '{:.0f}h'.format(s / 3600)
     elif s > 70:
@@ -208,7 +211,7 @@ def print_table(cols, rows, styles=None, titles=None, max_column_widths=None):
     for i, col in enumerate(cols):
         click.secho(('{:' + str(colwidths[col]) + '}').format(titles.get(col, col.title().replace('_', ' '))),
                     nl=False, fg='black', bg='white')
-        if i < len(cols)-1:
+        if i < len(cols) - 1:
             click.secho('│', nl=False, fg='black', bg='white')
     click.echo('')
 
@@ -256,12 +259,12 @@ def choice(prompt: str, options: list, default=None):
             value = label = option
         if value == default:
             promptdefault = i + 1
-        click.secho('{}) {}'.format(i+1, label), err=stderr)
+        click.secho('{}) {}'.format(i + 1, label), err=stderr)
     while True:
         selection = click.prompt('Please select (1-{})'.format(len(options)),
                                  type=int, default=promptdefault, err=stderr)
         try:
-            result = options[int(selection)-1]
+            result = options[int(selection) - 1]
             if isinstance(result, tuple):
                 value, label = result
             else:
@@ -275,6 +278,7 @@ class AliasedGroup(click.Group):
     """
     Click group which allows using abbreviated commands
     """
+
     def get_command(self, ctx, cmd_name):
         rv = click.Group.get_command(self, ctx, cmd_name)
         if rv is not None:

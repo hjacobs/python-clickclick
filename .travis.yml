@@ -4,9 +4,9 @@ python:
   - "3.5"
 install:
   - pip install -r requirements.txt
-  - pip install coveralls
+  - pip install coveralls flake8
 script:
   - python setup.py test
-  - python setup.py flake8
+  - flake8 .
 after_success:
   - coveralls

@@ -93,7 +93,7 @@ See this `example script`_ and the `shell script`_.
 ::
 
    $ ./example.py li
-   Identifier│Name     │Status │Creation Date│Description                                       │Without Title
+   Identifier|Name     |Status |Creation Date|Description                                       |Without Title
             0 Column #0 ERROR   -4228033s ago this is a verrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr.. column without title
             1 Column #1 FINE    -4228033s ago this is a verrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr.. column without title
             2 Column #2 WARNING -4228033s ago this is a verrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr.. column without title
@@ -188,7 +188,7 @@ See this `example script`_ and the `shell script`_.
    This is a ok with message:all is fine
    This is a warning: please check this
    Start with working.. . . . . OK
-   Id│Name
+   Id|Name
     1 Test #1
     2 Test #2
    Only FYI
@@ -220,7 +220,7 @@ See this `example script`_ and the `shell script`_.
 License
 =======
 
-Copyright © 2015 Zalando SE
+Copyright (c) 2015 Zalando SE
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

@@ -95,7 +95,8 @@ def get_install_requirements(path):
 
 
 def read(fname):
-    return open(os.path.join(__location__, fname), encoding='utf-8').read()
+    with open(os.path.join(__location__, fname)) as readme:
+        return readme.read()
 
 
 def check_deps(deps):

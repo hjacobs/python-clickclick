@@ -1,26 +1,15 @@
+# -*- coding: utf-8 -*-
+
 import datetime
-import pytest
 import time
 
 import click
-
 from click.testing import CliRunner
-from clickclick import (
-    Action,
-    action,
-    AliasedGroup,
-    choice,
-    error,
-    fatal_error,
-    FloatRange,
-    format_time,
-    info,
-    ok,
-    OutputFormat,
-    print_table,
-    UrlType,
-    warning,
-)
+from clickclick import (Action, AliasedGroup, FloatRange, OutputFormat,
+                        UrlType, action, choice, error, fatal_error,
+                        format_time, info, ok, print_table, warning)
+
+import pytest
 
 
 def test_echo():
@@ -93,7 +82,7 @@ def test_text_out(capsys):
         warning('this is a warning')
         print_table('a b'.split(), [{}, {}])
     out, err = capsys.readouterr()
-    assert 'A│B\n    \n    \n' == out
+    assert u'A│B\n    \n    \n' == out
     assert 'this is a warning\n' == err
 
 

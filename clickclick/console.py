@@ -1,11 +1,19 @@
-import click
+# -*- coding: utf-8 -*-
+
 import datetime
 import json
+import numbers
 import sys
 import time
+
+import click
 import yaml
-import numbers
-import urllib.parse
+
+try:
+    from urllib.parse import urlsplit, urlunsplit
+except ImportError:  # NOQA
+    from urlparse import urlsplit, urlunsplit
+
 
 # global state is evil!
 # anyway, we are using this as a convenient hack to switch output formats
@@ -242,7 +250,7 @@ def print_table(cols, rows, styles=None, titles=None, max_column_widths=None):
         click.echo('')
 
 
-def choice(prompt: str, options: list, default=None):
+def choice(prompt, options, default=None):
     """
     Ask to user to select one option and return it
     """
@@ -342,11 +350,11 @@ class UrlType(click.types.ParamType):
             self.fail('"{}" is not a valid URL'.format(value))
         if self.default_scheme and '://' not in value:
             value = '{}://{}'.format(self.default_scheme, value)
-        url = urllib.parse.urlsplit(value)
+        url = urlsplit(value)
         if self.allowed_schemes and url.scheme not in self.allowed_schemes:
             self.fail('"{}" is not one of the allowed URL schemes ({})'.format(
                       url.scheme, ', '.join(self.allowed_schemes)))
-        return urllib.parse.urlunsplit(url)
+        return urlunsplit(url)
 
     def __repr__(self):
         return 'UrlType(%r, %r)' % (self.default_scheme, self.allowed_schemes)

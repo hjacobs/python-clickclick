@@ -51,18 +51,9 @@ See this `example script`_ and the `shell script`_.
 
 .. _example script: example.py
 
-.. literalinclude:: example.py
-   :language: python3
-   :linenos:
-
-
 .. _shell script: example.sh
 
-.. literalinclude:: example.sh
-   :language: bash
-   :linenos:
-
-::
+.. code-block:: python3
 
    $ ./example.py
    Usage: example.py [OPTIONS] COMMAND [ARGS]...

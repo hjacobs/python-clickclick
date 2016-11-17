@@ -1,0 +1,21 @@
+Contributing Guidelines
+=========================
+
+Wanna contribute to this project? Yay - here is how!
+
+Filing Issues
+================
+
+If you have a question about python-clickclick, or have problems using it, please read the [readme]( README.rst) before filing an issue. Also, double-check with the current issues on our [Issues Tracker](https://github.com/zalando/python-clickclick/issues).
+
+Contributing a Pull Request
+==============================
+
+1. Submit a comment to the relevant issue or create a new issue describing your proposed change.
+1. Do a fork, develop and test your code changes.
+1. Include documentation
+1. Submit a pull request.
+
+You'll get feedback about your pull request as soon as possible.
+
+Happy hacking ;-)

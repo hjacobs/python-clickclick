@@ -12,9 +12,9 @@ Contributing a Pull Request
 ==============================
 
 1. Submit a comment to the relevant issue or create a new issue describing your proposed change.
-1. Do a fork, develop and test your code changes.
-1. Include documentation
-1. Submit a pull request.
+2. Do a fork, develop and test your code changes.
+3. Include documentation.
+4. Submit a pull request.
 
 You'll get feedback about your pull request as soon as possible.
 

@@ -6,7 +6,7 @@ Wanna contribute to this project? Yay, here is how!
 Filing Issues
 ================
 
-If you have a question about python-clickclick, or have problems using it, please read the [readme]( README.rst) before filing an issue. Also, double-check with the current issues on our `Issues Tracker`_.
+If you have a question about python-clickclick, or have problems using it, please read the README before filing an issue. Also, double-check with the current issues on our `Issues Tracker`_.
 
 Contributing a Pull Request
 ==============================

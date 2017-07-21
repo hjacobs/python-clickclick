@@ -19,6 +19,7 @@ def read_version(package):
             if line.startswith('__version__ = '):
                 return line.split()[-1].strip().strip('\'')
 
+
 NAME = 'clickclick'
 MAIN_PACKAGE = 'clickclick'
 VERSION = read_version(MAIN_PACKAGE)

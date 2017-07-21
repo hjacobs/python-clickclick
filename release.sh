@@ -12,7 +12,11 @@ git --version
 
 version=$1
 
-sed -i "s/__version__ = .*/__version__ = '${version}'/" */__init__.py
+if [[ "$OSTYPE" == "darwin"* ]]; then
+	sed -i "" "s/__version__ = .*/__version__ = '${version}'/" */__init__.py
+else
+	sed -i "s/__version__ = .*/__version__ = '${version}'/" */__init__.py
+fi
 
 # Do not tag/push on Go CD
 if [ -z "$GO_PIPELINE_LABEL" ]; then

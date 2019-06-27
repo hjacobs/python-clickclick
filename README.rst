@@ -2,12 +2,12 @@
 Click Click
 ===========
 
-.. image:: https://travis-ci.org/zalando/python-clickclick.svg?branch=master
-   :target: https://travis-ci.org/zalando/python-clickclick
+.. image:: https://travis-ci.org/hjacobs/python-clickclick.svg?branch=master
+   :target: https://travis-ci.org/hjacobs/python-clickclick
    :alt: Travis CI build status
 
-.. image:: https://coveralls.io/repos/zalando/python-clickclick/badge.svg
-   :target: https://coveralls.io/r/zalando/python-clickclick
+.. image:: https://coveralls.io/repos/hjacobs/python-clickclick/badge.svg
+   :target: https://coveralls.io/r/hjacobs/python-clickclick
 
 .. image:: https://img.shields.io/pypi/dw/clickclick.svg
    :target: https://pypi.python.org/pypi/clickclick/
@@ -211,7 +211,7 @@ See this `example script`_ and the `shell script`_.
 License
 =======
 
-Copyright (c) 2015 Zalando SE
+Copyright (c) 2015-2019 Zalando SE
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
